@@ -1,0 +1,30 @@
+html,body {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background-color: grey;
+}
+
+#board {
+    background-color: seashell;
+    width: 1000px;
+    height: 720px;
+    text-align: center;
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden; 
+}
+
+#player {
+    background-color: blue;
+    position: absolute;
+}
+
+.obstacle {
+    background-color: red;
+    position: absolute;
+}
