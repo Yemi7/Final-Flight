@@ -1,4 +1,3 @@
-console.log('hello world')
 const player = document.getElementById('player');
 
 class Player {
@@ -10,9 +9,9 @@ class Player {
 
         this.updateUI();
     }
-    updateUI() {//values referenced and changed in this method
+    updateUI() {
         const playerElm = document.getElementById("player")
-        playerElm.style.left = this.positionX + "px"//or `${this.position}px`
+        playerElm.style.left = this.positionX + "px"
         playerElm.style.bottom = this.positionY + "px"
         playerElm.style.width = this.width + "px"
         playerElm.style.height = this.height + "px"
@@ -49,8 +48,6 @@ class Obstacle {
         this.width = 80;
         this.topObstacleHeight = Math.floor(Math.random()* (520-100) + 80);
         this.bottomObstacleHeight = 720 - this.topObstacleHeight - 200;
-        console.log(this.topObstacleHeight)
-        console.log(this.bottomObstacleHeight)
         this.positionX = 1000;
         this.topObsPositionY = 720 -this.topObstacleHeight;
         this.bottomObsPositionY = 0;
@@ -110,7 +107,6 @@ const moveObstaclesInterval = setInterval(() => {
             player1.positionY + player1.height > obstacle.topObsPositionY
             
         ) {
-            console.log('Gameover')
             clearInterval(moveObstaclesInterval);
             clearInterval(createObstaclesInterval);
             location.href = 'gameover.html'
@@ -120,7 +116,6 @@ const moveObstaclesInterval = setInterval(() => {
             player1.positionY < obstacle.bottomObsPositionY + obstacle.bottomObstacleHeight &&
             player1.positionY + player1.height > obstacle.bottomObsPositionY
         ){
-            console.log('Gameover')
             clearInterval(moveObstaclesInterval);
             clearInterval(createObstaclesInterval);
             location.href = 'gameover.html'
