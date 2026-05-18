@@ -47,57 +47,84 @@ document.addEventListener('keydown', (event) => {
 class Obstacle {
     constructor() {
         this.width = 80;
-        this.height = 500;
+        this.topObstacleHeight = Math.floor(Math.random()* (520-100) + 80);
+        this.bottomObstacleHeight = 720 - this.topObstacleHeight - 200;
+        console.log(this.topObstacleHeight)
+        console.log(this.bottomObstacleHeight)
         this.positionX = 1000;
-        this.positionY = Math.floor(Math.random() * (700 - this.height));
-
-        this.obstacleElm = null;
+        this.topObsPositionY = 720 -this.topObstacleHeight;
+        this.bottomObsPositionY = 0;
+        this.topObstacleElm = null;
+        this.bottomObstacleElm = null;
         this.createDynamicElement();
-        this.updateUI();
+        this.updateUIUpp();
+        this.updateUIDown();
     }
     createDynamicElement() {
-        this.obstacleElm = document.createElement('div');
-        this.obstacleElm.className = ('obstacle');
+        this.topObstacleElm = document.createElement('div');
+        this.topObstacleElm.className = ('obstacleUpp');
+        this.bottomObstacleElm = document.createElement('div');
+        this.bottomObstacleElm.className = ('obstacleDown');
         const boardElm = document.getElementById('board');
-        boardElm.appendChild(this.obstacleElm);
+        boardElm.appendChild(this.topObstacleElm);
+        boardElm.appendChild(this.bottomObstacleElm);
 
     }
-    updateUI() {
-        this.obstacleElm.style.width = `${this.width}px`
-        this.obstacleElm.style.height = `${this.height}px`
-        this.obstacleElm.style.bottom = `${this.positionY}px`
-        this.obstacleElm.style.left = `${this.positionX}px`
+    updateUIUpp() {
+        this.topObstacleElm.style.width = `${this.width}px`
+        this.topObstacleElm.style.height = `${this.topObstacleHeight}px`
+        this.topObstacleElm.style.bottom = `${this.topObsPositionY}px`
+        this.topObstacleElm.style.left = `${this.positionX}px`
+    }
+    updateUIDown() {
+        this.bottomObstacleElm.style.width = `${this.width}px`
+        this.bottomObstacleElm.style.height = `${this.bottomObstacleHeight}px`
+        this.bottomObstacleElm.style.bottom = `${this.bottomObsPositionY}px`
+        this.bottomObstacleElm.style.left = `${this.positionX}px`
     }
     moveLeft() {
         this.positionX -= 10;
-        this.updateUI()
+        this.updateUIUpp();
+        this.updateUIDown();
     }
 
 }
+
+
 
 
 const obstacleArr = [];
 
 const createObstaclesInterval = setInterval(() => {
     obstacleArr.push(new Obstacle);
-}, 2500)
+}, 2000)
 
 
 
 const moveObstaclesInterval = setInterval(() => {
     obstacleArr.forEach((obstacle) => {
         obstacle.moveLeft();
-
         if (player1.positionX < obstacle.positionX + obstacle.width &&
             player1.positionX + player1.width > obstacle.positionX &&
-            player1.positionY < obstacle.positionY + obstacle.height &&
-            player1.positionY + player1.height > obstacle.positionY
+            player1.positionY < obstacle.topObsPositionY + obstacle.topObstacleHeight &&
+            player1.positionY + player1.height > obstacle.topObsPositionY
+            
         ) {
             console.log('Gameover')
             clearInterval(moveObstaclesInterval);
             clearInterval(createObstaclesInterval);
-
+            location.href = 'gameover.html'
+        } else if(
+            player1.positionX < obstacle.positionX + obstacle.width &&
+            player1.positionX + player1.width > obstacle.positionX &&
+            player1.positionY < obstacle.bottomObsPositionY + obstacle.bottomObstacleHeight &&
+            player1.positionY + player1.height > obstacle.bottomObsPositionY
+        ){
+            console.log('Gameover')
+            clearInterval(moveObstaclesInterval);
+            clearInterval(createObstaclesInterval);
+            location.href = 'gameover.html'
         }
     })
 
-}, 50); 
+}, 40); 

@@ -24,7 +24,11 @@ html,body {
     position: absolute;
 }
 
-.obstacle {
+.obstacleUpp {
+    background-color: red;
+    position: absolute;
+}
+.obstacleDown {
     background-color: red;
     position: absolute;
 }

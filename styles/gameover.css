@@ -1,0 +1,21 @@
+@font-face {
+    font-family: Roboto;
+    src: url(./../resources/Roboto_Mono/RobotoMono-VariableFont_wght.ttf);
+}
+
+body{
+    font-family: 'Roboto';
+    background-color: grey;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#gameover {
+    color: seashell;
+    font-size: 10em
+}
