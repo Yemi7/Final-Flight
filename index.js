@@ -1,5 +1,5 @@
 const player = document.getElementById('player');
-
+// Player Properties
 class Player {
     constructor() {
         this.positionX = 200;
@@ -32,6 +32,8 @@ class Player {
 
 }
 
+
+// Player Movement
 const player1 = new Player();
 
 document.addEventListener('keydown', (event) => {
@@ -43,13 +45,20 @@ document.addEventListener('keydown', (event) => {
     }
 })
 
+// Properties of the Board and Obstacle extremes
+const obsMinHeight = 80;
+const obstacleGap = 200;
+const boardHeight = 720;
+const boardWidth = 1000;
+
+// Obstacle Properties
 class Obstacle {
     constructor() {
         this.width = 80;
-        this.topObstacleHeight = Math.floor(Math.random()* (520-100) + 80);
-        this.bottomObstacleHeight = 720 - this.topObstacleHeight - 200;
-        this.positionX = 1000;
-        this.topObsPositionY = 720 -this.topObstacleHeight;
+        this.topObstacleHeight = Math.floor(Math.random()* ((boardHeight-obstacleGap)-obsMinHeight) + 80);
+        this.bottomObstacleHeight = boardHeight - this.topObstacleHeight - obstacleGap;
+        this.positionX = boardWidth;
+        this.topObsPositionY = boardHeight -this.topObstacleHeight;
         this.bottomObsPositionY = 0;
         this.topObstacleElm = null;
         this.bottomObstacleElm = null;
@@ -89,7 +98,7 @@ class Obstacle {
 
 
 
-
+// Obstacle Generation and Scrolling
 const obstacleArr = [];
 
 const createObstaclesInterval = setInterval(() => {
