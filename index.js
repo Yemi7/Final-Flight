@@ -1,11 +1,14 @@
 const player = document.getElementById('player');
+const playerStartingPostition = 720 / 2 - 40;
 // Player Properties
 class Player {
     constructor() {
         this.positionX = 200;
-        this.positionY = 0;
+        this.positionY = playerStartingPostition;
         this.width = 40;
         this.height = 40;
+        this.acceleration = 2;
+        this.tickMs = 40;
 
         this.updateUI();
     }
@@ -16,18 +19,21 @@ class Player {
         playerElm.style.width = this.width + "px"
         playerElm.style.height = this.height + "px"
     }
-    moveUp() {
-
-        if (this.positionY < 720 - this.height) {
-            this.positionY += 40;
-            this.updateUI();
-        }
-    }
-    moveDown() {
-        if (this.positionY > 0) {
-            this.positionY -= 40;
+    jump() {
+        this.velocity = 20;
+        this.jumpTimer = setInterval(() => {
+            this.positionY += this.velocity
+            this.velocity -= this.acceleration;
             this.updateUI()
-        }
+            if(this.positionY + this.height >= boardHeight ){
+            this.velocity = -this.velocity;
+            this.velocity -= this.acceleration;
+            }
+            if(this.positionY <= 0){
+                gameover();
+                console.log('checking position '+ this.positionY)
+            }
+        }, this.tickMs)
     }
 
 }
@@ -36,14 +42,15 @@ class Player {
 // Player Movement
 const player1 = new Player();
 
-document.addEventListener('keydown', (event) => {
-    if (event.code === 'ArrowUp') {
-        player1.moveUp();
+function keyListner (event) {
+    if (event.code === 'Space' && player1.positionY + player1.height <= boardHeight ) {
+        clearInterval(player1.jumpTimer)
+        player1.jump();
+
     }
-    if (event.code === 'ArrowDown') {
-        player1.moveDown();
-    }
-})
+}
+
+document.addEventListener('keydown', keyListner)
 
 // Properties of the Board and Obstacle extremes
 const obsMinHeight = 80;
@@ -55,10 +62,10 @@ const boardWidth = 1000;
 class Obstacle {
     constructor() {
         this.width = 80;
-        this.topObstacleHeight = Math.floor(Math.random()* ((boardHeight-obstacleGap)-obsMinHeight) + 80);
+        this.topObstacleHeight = Math.floor(Math.random() * ((boardHeight - obstacleGap - obsMinHeight) + obsMinHeight));
         this.bottomObstacleHeight = boardHeight - this.topObstacleHeight - obstacleGap;
         this.positionX = boardWidth;
-        this.topObsPositionY = boardHeight -this.topObstacleHeight;
+        this.topObsPositionY = boardHeight - this.topObstacleHeight;
         this.bottomObsPositionY = 0;
         this.topObstacleElm = null;
         this.bottomObstacleElm = null;
@@ -114,21 +121,25 @@ const moveObstaclesInterval = setInterval(() => {
             player1.positionX + player1.width > obstacle.positionX &&
             player1.positionY < obstacle.topObsPositionY + obstacle.topObstacleHeight &&
             player1.positionY + player1.height > obstacle.topObsPositionY
-            
+
         ) {
-            clearInterval(moveObstaclesInterval);
-            clearInterval(createObstaclesInterval);
-            location.href = 'gameover.html'
-        } else if(
+            gameover();
+        } else if (
             player1.positionX < obstacle.positionX + obstacle.width &&
             player1.positionX + player1.width > obstacle.positionX &&
             player1.positionY < obstacle.bottomObsPositionY + obstacle.bottomObstacleHeight &&
             player1.positionY + player1.height > obstacle.bottomObsPositionY
-        ){
-            clearInterval(moveObstaclesInterval);
-            clearInterval(createObstaclesInterval);
-            location.href = 'gameover.html'
+        ) {
+            gameover();
         }
     })
 
 }, 40); 
+
+function gameover(){
+    clearInterval(moveObstaclesInterval);
+    clearInterval(createObstaclesInterval);
+    clearInterval(player1.jumpTimer);
+    document.removeEventListener('keydown', keyListner)
+    location.href = 'gameover.html'
+}
