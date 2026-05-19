@@ -149,7 +149,15 @@ function moveObstacles(boolean) {
 
 
 function startGame() {
-
+    let gameStarted = false;
+    document.addEventListener('keydown', (event) => {
+        if (event.code === 'Space' && gameStarted === false) {
+            gameStarted = true;
+            createObstacles(true);
+            moveObstacles(true);
+            
+        }
+    })
 }
 
 function gameover() {
@@ -160,5 +168,4 @@ function gameover() {
     location.href = 'gameover.html'
 }
 
-createObstacles(true);
-moveObstacles(true);
+startGame()
