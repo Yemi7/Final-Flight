@@ -52,6 +52,8 @@ function keyListner (event) {
 
 document.addEventListener('keydown', keyListner)
 
+
+
 // Properties of the Board and Obstacle extremes
 const obsMinHeight = 80;
 const obstacleGap = 200;
@@ -104,9 +106,9 @@ class Obstacle {
 }
 
 
-
 // Obstacle Generation and Scrolling
 const obstacleArr = [];
+
 
 const createObstaclesInterval = setInterval(() => {
     obstacleArr.push(new Obstacle);
@@ -136,10 +138,15 @@ const moveObstaclesInterval = setInterval(() => {
 
 }, 40); 
 
+function startGame() {
+
+}
+
 function gameover(){
     clearInterval(moveObstaclesInterval);
     clearInterval(createObstaclesInterval);
     clearInterval(player1.jumpTimer);
-    document.removeEventListener('keydown', keyListner)
+    document.removeEventListener('keydown', keyListner);
     location.href = 'gameover.html'
 }
+

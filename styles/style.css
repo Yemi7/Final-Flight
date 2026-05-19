@@ -22,13 +22,18 @@ html,body {
 #player {
     background-color: blue;
     position: absolute;
+    border-radius: 10px;
 }
 
 .obstacleUpp {
-    background-color: red;
+    background-color: grey;
     position: absolute;
+    border-bottom-left-radius: 7px;
+    border-bottom-right-radius: 7px;
 }
 .obstacleDown {
-    background-color: red;
+    background-color: grey;
     position: absolute;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
 }

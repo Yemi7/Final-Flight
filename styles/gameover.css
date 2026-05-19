@@ -10,6 +10,7 @@ body{
 
 .container {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
@@ -18,4 +19,15 @@ body{
 #gameover {
     color: seashell;
     font-size: 10em
+}
+
+button {
+    width: 200px;
+    height: 50px;
+    border-radius: 9px;
+    background-color: seashell;
+    color: grey;
+    font-size: 1.7em;
+    letter-spacing: 2px;
+    word-spacing: 5px;
 }
