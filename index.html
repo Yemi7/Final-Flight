@@ -1,13 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./styles/style.css">
     <title>Tappy</title>
 </head>
+
 <body>
     <div id="board">
+        <div id="start">
+            <h1 id="start-message">Press space to start</h1>
+        </div>
+        <div id="endscreen" class ='hide'>
+            <h1 id="gameover">You Lost</h1>
+            <button id="restart">Try Again?</button>
+        </div>
         <div id="player"></div>
         <div id="score">0</div>
         <div class="background">
@@ -21,4 +30,5 @@
     </div>
 </body>
 <script src="./scripts/index.js"></script>
+
 </html>

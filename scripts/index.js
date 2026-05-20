@@ -11,6 +11,7 @@ class Player {
         this.tickMs = 25;
         this.score = 0;
         this.updateUI();
+        this.updateScore();
     }
     updateUI() {
         const playerElm = document.getElementById("player")
@@ -45,17 +46,15 @@ class Player {
 // Player Movement
 const player1 = new Player();
 
+//Declared in global scope so it can be removed
 function keyListner(event) {
     if (event.code === 'Space' && player1.positionY + player1.height <= boardHeight) {
         clearInterval(player1.jumpTimer)
         player1.jump();
-
     }
 }
 
-document.addEventListener('keydown', keyListner)
-
-
+document.addEventListener('keydown', keyListner);
 
 // Properties of the Board and Obstacle extremes
 const obsMinHeight = 90;
@@ -68,7 +67,7 @@ const boardWidth = 1000;
 class Obstacle {
     constructor() {
         this.width = 80;
-        this.topObstacleHeight = Math.floor(Math.random() * (boardHeight - obstacleGap - obsMaxHeightLimiter)+obsMinHeight);
+        this.topObstacleHeight = Math.floor(Math.random() * (boardHeight - obstacleGap - obsMaxHeightLimiter) + obsMinHeight);
         this.bottomObstacleHeight = boardHeight - this.topObstacleHeight - obstacleGap;
         this.positionX = boardWidth;
         this.topObsPositionY = boardHeight - this.topObstacleHeight;
@@ -79,6 +78,7 @@ class Obstacle {
         this.createDynamicElement();
         this.updateUIUpp();
         this.updateUIDown();
+        this.tickMs = 25;
     }
     createDynamicElement() {
         this.topObstacleElm = document.createElement('div');
@@ -103,83 +103,115 @@ class Obstacle {
         this.bottomObstacleElm.style.left = `${this.positionX}px`
     }
     moveLeft() {
-        this.positionX -= 10;
+        this.positionX -= 6.5;
         this.updateUIUpp();
         this.updateUIDown();
     }
 
 }
 
+const obstacle1 = new Obstacle;
 
-// Obstacle Generation and Scrolling
+
+// Array of Obstacle Instances
 const obstacleArr = [];
 
+// Intervals declared globally so they can be cleared
+const intervals = {
+    createObstacles: null,
+    moveObstacles: null,
+    score: null
+};
 
 
+
+// Create Obstacle Interval
 function createObstacles(boolean) {
-    const createObstaclesInterval = setInterval(() => {
-        const obstacle1 = new Obstacle;
-        obstacleArr.push(obstacle1);
-    }, 2000)
     if (boolean === false) {
-        clearInterval(createObstaclesInterval)
+        clearInterval(intervals.createObstacles)
+    } else {
+        intervals.createObstacles = setInterval(() => {
+            obstacleArr.push(new Obstacle);
+        }, 2000)
     }
+
+
 }
 
+// Move Obstacle Interval
 function moveObstacles(boolean) {
-    const moveObstaclesInterval = setInterval(() => {
-        obstacleArr.forEach((obstacle) => {
-            obstacle.moveLeft();
-            if (player1.positionX < obstacle.positionX + obstacle.width &&
-                player1.positionX + player1.width > obstacle.positionX &&
-                player1.positionY < obstacle.topObsPositionY + obstacle.topObstacleHeight &&
-                player1.positionY + player1.height > obstacle.topObsPositionY
-
-            ) {
-                gameover();
-            } else if (
-                player1.positionX < obstacle.positionX + obstacle.width &&
-                player1.positionX + player1.width > obstacle.positionX &&
-                player1.positionY < obstacle.bottomObsPositionY + obstacle.bottomObstacleHeight &&
-                player1.positionY + player1.height > obstacle.bottomObsPositionY
-            ) {
-                gameover();
-            }
-        })
-
-    }, 40);
     if (boolean === false) {
-        clearInterval(moveObstaclesInterval)
-    }
+        clearInterval(intervals.moveObstacles)
+    } else {
+        intervals.moveObstacles = setInterval(() => {
 
+            obstacleArr.forEach((obstacle) => {
+                obstacle.moveLeft();
+                if (player1.positionX < obstacle.positionX + obstacle.width &&
+                    player1.positionX + player1.width > obstacle.positionX &&
+                    player1.positionY < obstacle.topObsPositionY + obstacle.topObstacleHeight &&
+                    player1.positionY + player1.height > obstacle.topObsPositionY
+
+                ) {
+                    gameover();
+                } else if (
+                    player1.positionX < obstacle.positionX + obstacle.width &&
+                    player1.positionX + player1.width > obstacle.positionX &&
+                    player1.positionY < obstacle.bottomObsPositionY + obstacle.bottomObstacleHeight &&
+                    player1.positionY + player1.height > obstacle.bottomObsPositionY
+                ) {
+                    gameover();
+                }
+            })
+
+        }, obstacle1.tickMs);
+
+    }
 }
+
 
 function score(boolean) {
-    const scoreInterval = setInterval(()=>{
-        obstacleArr.forEach((obstacle)=>{
-            
-            if(player1.positionX + player1.width > obstacle.positionX + obstacle.width && obstacle.past === false){
-                player1.score++;
-                player1.updateScore();
-                obstacle.past = true;
-            }
-        })
-    },40)
-    if(boolean === false){
-        clearInterval (scoreInterval)
+    if (boolean === false) {
+        clearInterval(intervals.score)
+    } else {
+        intervals.score = setInterval(() => {
+            obstacleArr.forEach((obstacle) => {
+
+                if (player1.positionX + player1.width > obstacle.positionX + obstacle.width && obstacle.past === false) {
+                    player1.score++;
+                    player1.updateScore();
+                    obstacle.past = true;
+                }
+            })
+        }, )
     }
+
+}
+
+let gameStarted = false;
+
+
+
+function startEventListener(event) {
+
+    if (event.code === 'Space' && gameStarted === false) {
+        gameStarted = true;
+        createObstacles(true);
+        moveObstacles(true);
+        score(true);
+        const startScreen = document.getElementById('start')
+        startScreen.classList.add('hide');
+    }
+
 }
 
 function startGame() {
-    let gameStarted = false;
-    document.addEventListener('keydown', (event) => {
-        if (event.code === 'Space' && gameStarted === false) {
-            gameStarted = true;
-            createObstacles(true);
-            moveObstacles(true);
-            score(true)
-        }
-    })
+    const startScreen = document.getElementById('start')
+    const endScreen = document.getElementById('endscreen')
+    endScreen.classList.add('hide')
+    /* const restartButton = document.getElementById('restart'); */
+    document.removeEventListener('keydown',startEventListener);
+    document.addEventListener('keydown', startEventListener);
 }
 
 function gameover() {
@@ -187,8 +219,27 @@ function gameover() {
     createObstacles(false);
     score(false);
     clearInterval(player1.jumpTimer);
+    const endScreen = document.getElementById('endscreen')
+    const restartButton = document.getElementById('restart');
+    endScreen.classList.remove('hide');
+
     document.removeEventListener('keydown', keyListner);
-    location.href = 'gameover.html'
+    restartButton.onclick = (() => {
+        const startScreen = document.getElementById('start');
+        startScreen.classList.remove('hide');
+        player1.score = 0;
+        player1.updateScore();
+        player1.positionY = playerStartingPostition;
+        player1.updateUI();
+        document.addEventListener('keydown', keyListner)
+        gameStarted = false;
+        obstacleArr.forEach((obstacle) => {
+            obstacle.topObstacleElm.remove();
+            obstacle.bottomObstacleElm.remove();
+        })
+        obstacleArr.splice(0, obstacleArr.length);
+        startGame()
+    })
 }
 
 startGame()
