@@ -5,10 +5,10 @@ class Player {
     constructor() {
         this.positionX = 200;
         this.positionY = playerStartingPostition;
-        this.width = 40;
-        this.height = 40;
-        this.acceleration = 2;
-        this.tickMs = 40;
+        this.width = 50;
+        this.height = 60;
+        this.acceleration = 1;
+        this.tickMs = 25;
 
         this.updateUI();
     }
@@ -20,7 +20,7 @@ class Player {
         playerElm.style.height = this.height + "px"
     }
     jump() {
-        this.velocity = 20;
+        this.velocity = 15;
         this.jumpTimer = setInterval(() => {
             this.positionY += this.velocity
             this.velocity -= this.acceleration;
@@ -55,7 +55,8 @@ document.addEventListener('keydown', keyListner)
 
 
 // Properties of the Board and Obstacle extremes
-const obsMinHeight = 80;
+const obsMinHeight = 100;
+const obsMaxHeightLimiter = 150;
 const obstacleGap = 200;
 const boardHeight = 720;
 const boardWidth = 1000;
@@ -64,7 +65,7 @@ const boardWidth = 1000;
 class Obstacle {
     constructor() {
         this.width = 80;
-        this.topObstacleHeight = Math.floor(Math.random() * ((boardHeight - obstacleGap - obsMinHeight) + obsMinHeight));
+        this.topObstacleHeight = Math.floor(Math.random() * (boardHeight - obstacleGap - obsMaxHeightLimiter)+obsMinHeight);
         this.bottomObstacleHeight = boardHeight - this.topObstacleHeight - obstacleGap;
         this.positionX = boardWidth;
         this.topObsPositionY = boardHeight - this.topObstacleHeight;
@@ -109,9 +110,14 @@ class Obstacle {
 // Obstacle Generation and Scrolling
 const obstacleArr = [];
 
+
+
 function createObstacles(boolean) {
     const createObstaclesInterval = setInterval(() => {
-        obstacleArr.push(new Obstacle);
+        const obstacle1 = new Obstacle;
+        obstacleArr.push(obstacle1);
+        console.log(obstacle1.topObstacleHeight)
+        console.log(obstacle1.bottomObstacleHeight)
     }, 2000)
     if (boolean === false) {
         clearInterval(createObstaclesInterval)
