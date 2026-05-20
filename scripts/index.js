@@ -9,7 +9,7 @@ class Player {
         this.height = 60;
         this.acceleration = 1;
         this.tickMs = 25;
-
+        this.score = 0;
         this.updateUI();
     }
     updateUI() {
@@ -31,9 +31,12 @@ class Player {
             }
             if (this.positionY <= 0) {
                 gameover();
-                console.log('checking position ' + this.positionY)
             }
         }, this.tickMs)
+    }
+    updateScore() {
+        const scoreElm = document.getElementById('score');
+        scoreElm.innerHTML = `${this.score}`;
     }
 
 }
@@ -117,8 +120,6 @@ function createObstacles(boolean) {
     const createObstaclesInterval = setInterval(() => {
         const obstacle1 = new Obstacle;
         obstacleArr.push(obstacle1);
-        console.log(obstacle1.topObstacleHeight)
-        console.log(obstacle1.bottomObstacleHeight)
     }, 2000)
     if (boolean === false) {
         clearInterval(createObstaclesInterval)
@@ -158,7 +159,8 @@ function score(boolean) {
         obstacleArr.forEach((obstacle)=>{
             
             if(player1.positionX + player1.width > obstacle.positionX + obstacle.width && obstacle.past === false){
-                console.log('working :)')
+                player1.score++;
+                player1.updateScore();
                 obstacle.past = true;
             }
         })
