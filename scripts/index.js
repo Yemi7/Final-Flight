@@ -55,7 +55,7 @@ document.addEventListener('keydown', keyListner)
 
 
 // Properties of the Board and Obstacle extremes
-const obsMinHeight = 100;
+const obsMinHeight = 90;
 const obsMaxHeightLimiter = 150;
 const obstacleGap = 200;
 const boardHeight = 720;
@@ -72,6 +72,7 @@ class Obstacle {
         this.bottomObsPositionY = 0;
         this.topObstacleElm = null;
         this.bottomObstacleElm = null;
+        this.past = false;
         this.createDynamicElement();
         this.updateUIUpp();
         this.updateUIDown();
@@ -152,7 +153,20 @@ function moveObstacles(boolean) {
 
 }
 
-
+function score(boolean) {
+    const scoreInterval = setInterval(()=>{
+        obstacleArr.forEach((obstacle)=>{
+            
+            if(player1.positionX + player1.width > obstacle.positionX + obstacle.width && obstacle.past === false){
+                console.log('working :)')
+                obstacle.past = true;
+            }
+        })
+    },40)
+    if(boolean === false){
+        clearInterval (scoreInterval)
+    }
+}
 
 function startGame() {
     let gameStarted = false;
@@ -161,7 +175,7 @@ function startGame() {
             gameStarted = true;
             createObstacles(true);
             moveObstacles(true);
-            
+            score(true)
         }
     })
 }
@@ -169,6 +183,7 @@ function startGame() {
 function gameover() {
     moveObstacles(false);
     createObstacles(false);
+    score(false);
     clearInterval(player1.jumpTimer);
     document.removeEventListener('keydown', keyListner);
     location.href = 'gameover.html'
