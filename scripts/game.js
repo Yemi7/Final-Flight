@@ -1,10 +1,13 @@
 const params = new URLSearchParams(window.location.search);
 const level = params.get('level');
-const audio = document.getElementById('jumpSound');
+const jumpSound = document.getElementById('jumpSound');
+const gameOverSound = document.getElementById('gameOverSound')
+gameOverSound.volume = 0.1;
 function playOverlapping() {
-    const clone = audio.cloneNode();
+    const clone = jumpSound.cloneNode();
+    clone.volume = 0.1;
     clone.play();
-}
+} 
 
 const settings = {
     easy: 400,
@@ -25,7 +28,6 @@ class Player {
         this.acceleration = 1;
         this.tickMs = 25;
         this.score = 0;
-
         this.updateUI();
         this.updateScore();
     }
@@ -277,6 +279,7 @@ function startGame() {
 }
 
 function gameover() {
+    gameOverSound.play();
     moveObstacles(false);
     createObstacles(false);
     score(false);
