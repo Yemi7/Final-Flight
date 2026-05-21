@@ -124,7 +124,7 @@ body {
     background-image: url('../resources/images/Mountains.png');
     background-repeat: repeat-x;
     background-position: bottom;
-    background-size: 830px;
+    background-size: auto 75%;
     bottom: 0;
     left: -40px;
 }
@@ -136,7 +136,7 @@ body {
     background-image: url('../resources/images/Clouds-Bottom.png');
     background-repeat: repeat-x;
     background-position: bottom;
-    background-size: 700px;
+    background-size: auto 50%;
     bottom: 0;
 }
 
@@ -147,7 +147,7 @@ body {
     background-image: url('../resources/images/Clouds.png');
     background-position: center;
     background-repeat: repeat-x;
-    background-size: cover;
+    background-size: auto 100%;
 }
 
 

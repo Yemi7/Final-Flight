@@ -59,9 +59,9 @@ document.addEventListener('keydown', keyListner);
 // Properties of the Board and Obstacle extremes
 const obsMinHeight = 90;
 const obsMaxHeightLimiter = 150;
-const obstacleGap = 200;
 const boardHeight = 720;
 const boardWidth = 1000;
+const obstacleGap = 200;//change with level
 
 // Obstacle Properties
 class Obstacle {
@@ -120,7 +120,7 @@ const obstacleArr = [];
 const intervals = {
     createObstacles: null,
     moveObstacles: null,
-    score: null
+    score: null,
 };
 
 
