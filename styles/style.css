@@ -13,9 +13,11 @@ body {
     justify-content: center;
     align-items: center;
     height: 100%;
-    background-color: grey;
+    background-color: rgb(77,80,104);
     font-family: 'Roboto';
 }
+
+
 
 #board {
     background-color: seashell;
@@ -118,15 +120,14 @@ body {
 }
 
 #mountains {
-    width: 200%;
+    width: 1000px;
     height: 100%;
     position: absolute;
     background-image: url('../resources/images/Mountains.png');
     background-repeat: repeat-x;
-    background-position: bottom;
-    background-size: auto 75%;
+    background-size: 1100px 95%;
     bottom: 0;
-    left: -40px;
+    background-position: bottom;
 }
 
 #clouds-bottom {
@@ -136,7 +137,7 @@ body {
     background-image: url('../resources/images/Clouds-Bottom.png');
     background-repeat: repeat-x;
     background-position: bottom;
-    background-size: auto 50%;
+    background-size: 800px 70%;
     bottom: 0;
 }
 
@@ -147,7 +148,7 @@ body {
     background-image: url('../resources/images/Clouds.png');
     background-position: center;
     background-repeat: repeat-x;
-    background-size: auto 100%;
+    background-size: 1000px 100%;
 }
 
 

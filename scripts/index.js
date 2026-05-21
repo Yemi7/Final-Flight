@@ -121,8 +121,50 @@ const intervals = {
     createObstacles: null,
     moveObstacles: null,
     score: null,
+    mountains: null,
 };
 
+
+//Mountain Scroll
+const mountain = {
+    element:  document.getElementById('mountains'),
+    x: 0,
+    scrollRate: 0.5,
+    imageWidth: 1100,
+    interval: null,
+    tickMs: 25,
+}
+const clouds = {
+    element:  document.getElementById('clouds'),
+    x: 0,
+    scrollRate: 1.5,
+    imageWidth: 1000,
+    interval: null,
+    tickMs: 25,
+}
+const bottomClouds = {
+    element:  document.getElementById('clouds-bottom'),
+    x: 0,
+    scrollRate: 1,
+    imageWidth: 800,
+    interval: null,
+    tickMs: 25,
+}
+
+
+function scrollElm(boolean, object) {
+    if (boolean === false) {
+        clearInterval(object.interval)
+    } else {
+        object.interval = setInterval(() => {
+            object.x -= object.scrollRate;
+            if (object.x <= -object.imageWidth) {
+                object.x = 0;
+            }
+            object.element.style.backgroundPosition = `${object.x}px 100%`
+        }, object.tickMs)
+    }
+}
 
 
 // Create Obstacle Interval
@@ -183,7 +225,7 @@ function score(boolean) {
                     obstacle.past = true;
                 }
             })
-        }, )
+        },)
     }
 
 }
@@ -199,6 +241,9 @@ function startEventListener(event) {
         createObstacles(true);
         moveObstacles(true);
         score(true);
+        scrollElm(true,mountain);
+        scrollElm(true,clouds);
+        scrollElm(true,bottomClouds);
         const startScreen = document.getElementById('start')
         startScreen.classList.add('hide');
     }
@@ -209,8 +254,8 @@ function startGame() {
     const startScreen = document.getElementById('start')
     const endScreen = document.getElementById('endscreen')
     endScreen.classList.add('hide')
-    /* const restartButton = document.getElementById('restart'); */
-    document.removeEventListener('keydown',startEventListener);
+    const restartButton = document.getElementById('restart');
+    document.removeEventListener('keydown', startEventListener);
     document.addEventListener('keydown', startEventListener);
 }
 
@@ -218,6 +263,9 @@ function gameover() {
     moveObstacles(false);
     createObstacles(false);
     score(false);
+    scrollElm(false,mountain);
+    scrollElm(false,clouds);
+    scrollElm(false,bottomClouds);
     clearInterval(player1.jumpTimer);
     const endScreen = document.getElementById('endscreen')
     const restartButton = document.getElementById('restart');
