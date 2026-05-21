@@ -1,5 +1,10 @@
 const params = new URLSearchParams(window.location.search);
 const level = params.get('level');
+const audio = document.getElementById('jumpSound');
+function playOverlapping() {
+    const clone = audio.cloneNode();
+    clone.play();
+}
 
 const settings = {
     easy: 400,
@@ -20,6 +25,7 @@ class Player {
         this.acceleration = 1;
         this.tickMs = 25;
         this.score = 0;
+
         this.updateUI();
         this.updateScore();
     }
@@ -31,6 +37,7 @@ class Player {
         playerElm.style.height = this.height + "px"
     }
     jump() {
+        playOverlapping(); 
         this.velocity = 15;
         this.jumpTimer = setInterval(() => {
             this.positionY += this.velocity
@@ -137,7 +144,7 @@ const intervals = {
 
 //Mountain Scroll
 const mountain = {
-    element:  document.getElementById('mountains'),
+    element: document.getElementById('mountains'),
     x: 0,
     scrollRate: 0.5,
     imageWidth: 1100,
@@ -145,7 +152,7 @@ const mountain = {
     tickMs: 25,
 }
 const clouds = {
-    element:  document.getElementById('clouds'),
+    element: document.getElementById('clouds'),
     x: 0,
     scrollRate: 1.5,
     imageWidth: 1000,
@@ -153,7 +160,7 @@ const clouds = {
     tickMs: 25,
 }
 const bottomClouds = {
-    element:  document.getElementById('clouds-bottom'),
+    element: document.getElementById('clouds-bottom'),
     x: 0,
     scrollRate: 1,
     imageWidth: 800,
@@ -251,9 +258,9 @@ function startEventListener(event) {
         createObstacles(true);
         moveObstacles(true);
         score(true);
-        scrollElm(true,mountain);
-        scrollElm(true,clouds);
-        scrollElm(true,bottomClouds);
+        scrollElm(true, mountain);
+        scrollElm(true, clouds);
+        scrollElm(true, bottomClouds);
         const startScreen = document.getElementById('start')
         startScreen.classList.add('hide');
     }
@@ -273,9 +280,9 @@ function gameover() {
     moveObstacles(false);
     createObstacles(false);
     score(false);
-    scrollElm(false,mountain);
-    scrollElm(false,clouds);
-    scrollElm(false,bottomClouds);
+    scrollElm(false, mountain);
+    scrollElm(false, clouds);
+    scrollElm(false, bottomClouds);
     clearInterval(player1.jumpTimer);
     const endScreen = document.getElementById('endscreen');
     const restartButton = document.getElementById('restart');
@@ -283,7 +290,7 @@ function gameover() {
     endScreen.classList.remove('hide');
 
     document.removeEventListener('keydown', keyListner);
-    changeDifficulty.onclick = (()=>{
+    changeDifficulty.onclick = (() => {
         location.href = './index.html'
     })
     restartButton.onclick = (() => {
