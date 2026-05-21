@@ -7,7 +7,7 @@ function playOverlapping() {
     const clone = jumpSound.cloneNode();
     clone.volume = 0.1;
     clone.play();
-} 
+}
 
 const settings = {
     easy: 400,
@@ -39,7 +39,7 @@ class Player {
         playerElm.style.height = this.height + "px"
     }
     jump() {
-        playOverlapping(); 
+        playOverlapping();
         this.velocity = 15;
         this.jumpTimer = setInterval(() => {
             this.positionY += this.velocity
@@ -73,7 +73,7 @@ function keyListner(event) {
     }
 }
 
-document.addEventListener('keydown', keyListner);
+
 
 // Properties of the Board and Obstacle extremes
 const obsMinHeight = 90;
@@ -255,8 +255,16 @@ let gameStarted = false;
 
 function startEventListener(event) {
 
-    if (event.code === 'Space' && gameStarted === false) {
+    if (event.code !== 'Space' || gameStarted === true) return;
         gameStarted = true;
+        document.removeEventListener('keydown', startEventListener);
+        document.addEventListener('keydown', keyListner);
+        clearInterval(intervals.createObstacles);
+        clearInterval(intervals.moveObstacles);
+        clearInterval(intervals.score);
+        clearInterval(mountain.interval);
+        clearInterval(clouds.interval);
+        clearInterval(bottomClouds.interval);
         createObstacles(true);
         moveObstacles(true);
         score(true);
@@ -265,7 +273,6 @@ function startEventListener(event) {
         scrollElm(true, bottomClouds);
         const startScreen = document.getElementById('start')
         startScreen.classList.add('hide');
-    }
 
 }
 
@@ -293,26 +300,32 @@ function gameover() {
     const changeDifficulty = document.getElementById('change-difficulty');
     endScreen.classList.remove('hide');
     finalScore.innerHTML = `Final score: ${player1.score}`
-    document.removeEventListener('keydown', keyListner);
-    changeDifficulty.onclick = (() => {
-        location.href = './index.html'
-    })
-    restartButton.onclick = (() => {
-        const startScreen = document.getElementById('start');
-        startScreen.classList.remove('hide');
-        player1.score = 0;
-        player1.updateScore();
-        player1.positionY = playerStartingPostition;
-        player1.updateUI();
-        document.addEventListener('keydown', keyListner)
-        gameStarted = false;
-        obstacleArr.forEach((obstacle) => {
-            obstacle.topObstacleElm.remove();
-            obstacle.bottomObstacleElm.remove();
-        })
-        obstacleArr.splice(0, obstacleArr.length);
-        startGame()
-    })
+
+
 }
 
 startGame()
+
+// Set these ONCE at the bottom of your file, replacing where they are in gameover()
+document.getElementById('change-difficulty').onclick = () => {
+    location.href = './index.html';
+}
+
+document.getElementById('restart').onclick = () => {
+    const startScreen = document.getElementById('start');
+    startScreen.classList.remove('hide');
+    player1.score = 0;
+    player1.updateScore();
+    player1.positionY = playerStartingPostition;
+    player1.velocity = 0;
+    clearInterval(player1.jumpTimer);
+    player1.updateUI();
+
+    gameStarted = false;
+    obstacleArr.forEach((obstacle) => {
+        obstacle.topObstacleElm.remove();
+        obstacle.bottomObstacleElm.remove();
+    });
+    obstacleArr.splice(0, obstacleArr.length);
+    startGame();
+}
