@@ -293,7 +293,6 @@ function gameover() {
     const changeDifficulty = document.getElementById('change-difficulty');
     endScreen.classList.remove('hide');
     finalScore.innerHTML = `Final score: ${player1.score}`
-
     document.removeEventListener('keydown', keyListner);
     changeDifficulty.onclick = (() => {
         location.href = './index.html'

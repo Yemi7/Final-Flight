@@ -87,14 +87,10 @@ body {
 } 
 
 .hide {
-    opacity: 0;
-    pointer-events: none;
+    visibility: hidden;
 
 }
 
-#start, #endscreen {
-    transition: opacity 0.5s ease;
-}
 
 #player {
     background-image: url('../resources/images/player-sprite.png');
