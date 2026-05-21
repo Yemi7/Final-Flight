@@ -289,8 +289,10 @@ function gameover() {
     clearInterval(player1.jumpTimer);
     const endScreen = document.getElementById('endscreen');
     const restartButton = document.getElementById('restart');
+    const finalScore = document.getElementById('final-score');
     const changeDifficulty = document.getElementById('change-difficulty');
     endScreen.classList.remove('hide');
+    finalScore.innerHTML = `Final score: ${player1.score}`
 
     document.removeEventListener('keydown', keyListner);
     changeDifficulty.onclick = (() => {
