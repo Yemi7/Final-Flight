@@ -73,7 +73,7 @@ function keyListner(event) {
     }
 }
 
-
+document.addEventListener('keydown', keyListner);
 
 // Properties of the Board and Obstacle extremes
 const obsMinHeight = 90;
@@ -306,7 +306,6 @@ function gameover() {
 
 startGame()
 
-// Set these ONCE at the bottom of your file, replacing where they are in gameover()
 document.getElementById('change-difficulty').onclick = () => {
     location.href = './index.html';
 }
