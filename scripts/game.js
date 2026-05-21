@@ -284,7 +284,7 @@ function gameover() {
 
     document.removeEventListener('keydown', keyListner);
     changeDifficulty.onclick = (()=>{
-        location.href = '../index.html'
+        location.href = './index.html'
     })
     restartButton.onclick = (() => {
         const startScreen = document.getElementById('start');
