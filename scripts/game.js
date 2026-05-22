@@ -256,24 +256,26 @@ let gameStarted = false;
 function startEventListener(event) {
 
     if (event.code !== 'Space' || gameStarted === true) return;
-        gameStarted = true;
-        document.removeEventListener('keydown', startEventListener);
+    gameStarted = true;
+    document.removeEventListener('keydown', startEventListener);
+    document.addEventListener('keydown', keyListner);
+    clearInterval(intervals.createObstacles);
+    clearInterval(intervals.moveObstacles);
+    clearInterval(intervals.score);
+    clearInterval(mountain.interval);
+    clearInterval(clouds.interval);
+    clearInterval(bottomClouds.interval);
+    createObstacles(true);
+    moveObstacles(true);
+    score(true);
+    scrollElm(true, mountain);
+    scrollElm(true, clouds);
+    scrollElm(true, bottomClouds);
+    const startScreen = document.getElementById('start')
+    startScreen.classList.add('hide');
+    startScreen.addEventListener('transitionend', () => {
         document.addEventListener('keydown', keyListner);
-        clearInterval(intervals.createObstacles);
-        clearInterval(intervals.moveObstacles);
-        clearInterval(intervals.score);
-        clearInterval(mountain.interval);
-        clearInterval(clouds.interval);
-        clearInterval(bottomClouds.interval);
-        createObstacles(true);
-        moveObstacles(true);
-        score(true);
-        scrollElm(true, mountain);
-        scrollElm(true, clouds);
-        scrollElm(true, bottomClouds);
-        const startScreen = document.getElementById('start')
-        startScreen.classList.add('hide');
-
+    }, { once: true });
 }
 
 function startGame() {
