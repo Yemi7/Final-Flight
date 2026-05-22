@@ -73,7 +73,6 @@ function keyListner(event) {
     }
 }
 
-document.addEventListener('keydown', keyListner);
 
 // Properties of the Board and Obstacle extremes
 const obsMinHeight = 90;
@@ -208,6 +207,12 @@ function moveObstacles(boolean) {
 
             obstacleArr.forEach((obstacle) => {
                 obstacle.moveLeft();
+
+                if (obstacle.positionX + obstacle.width < 0) {
+                    obstacle.topObstacleElm.remove();
+                    obstacle.bottomObstacleElm.remove();
+                    obstacleArr.splice(obstacleArr.indexOf(obstacle), 1);
+                }
                 if (player1.positionX < obstacle.positionX + obstacle.width &&
                     player1.positionX + player1.width > obstacle.positionX &&
                     player1.positionY < obstacle.topObsPositionY + obstacle.topObstacleHeight &&
@@ -258,7 +263,7 @@ function startEventListener(event) {
     if (event.code !== 'Space' || gameStarted === true) return;
     gameStarted = true;
     document.removeEventListener('keydown', startEventListener);
-    document.addEventListener('keydown', keyListner);
+    // document.addEventListener('keydown', keyListner);
     clearInterval(intervals.createObstacles);
     clearInterval(intervals.moveObstacles);
     clearInterval(intervals.score);
@@ -270,6 +275,7 @@ function startEventListener(event) {
     score(true);
     scrollElm(true, mountain);
     scrollElm(true, clouds);
+    player1.jump();
     scrollElm(true, bottomClouds);
     const startScreen = document.getElementById('start')
     startScreen.classList.add('hide');
@@ -296,6 +302,7 @@ function gameover() {
     scrollElm(false, clouds);
     scrollElm(false, bottomClouds);
     clearInterval(player1.jumpTimer);
+    document.removeEventListener('keydown', keyListner);
     const endScreen = document.getElementById('endscreen');
     const restartButton = document.getElementById('restart');
     const finalScore = document.getElementById('final-score');

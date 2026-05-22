@@ -92,8 +92,12 @@ body {
 
 }
 
-#start, #endscreen {
+#start {
     transition: opacity 0.5s ease, visibility 0.2s ease;  /* add visibility */
+}
+
+#endscreen {
+    transition: opacity 0.5s ease;  /* add visibility */
 }
 
 #player {
